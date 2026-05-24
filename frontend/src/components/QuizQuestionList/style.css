@@ -1,0 +1,109 @@
+@media (max-width: 700px) {
+    .quiz-table-container {
+        margin: 8px 0;
+        box-shadow: none;
+        overflow-x: auto;
+        width: 100%;
+        max-width: 100vw;
+    }
+    .quiz-questions-table,
+    .quiz-answers-table {
+        min-width: 600px;
+        width: 100%;
+        max-width: 100%;
+        display: table;
+    }
+}
+.quiz-back-button {
+    margin-bottom: 16px;
+}
+
+.quiz-pointer {
+    cursor: pointer;
+}
+
+.quiz-performance-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.quiz-performance-bar-bg {
+    flex: none;
+    width: 80px;
+    height: 10px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+}
+
+.quiz-performance-bar-correct {
+    background: green;
+    height: 100%;
+    transition: width 0.3s;
+}
+
+.quiz-performance-bar-incorrect {
+    background: red;
+    height: 100%;
+    transition: width 0.3s;
+}
+.quiz-table-container {
+    margin: 24px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.quiz-questions-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+    table-layout: fixed;
+}
+
+.quiz-questions-table th:not(:first-child),
+.quiz-questions-table td:not(:first-child) {
+    max-width: 150px;
+    word-break: break-word;
+    white-space: normal;
+    overflow: hidden;
+}
+
+.quiz-questions-table thead,
+.quiz-answers-table thead {
+    /* background-color: #222; */
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+.quiz-questions-table th,
+.quiz-answers-table th {
+    font-weight: bold;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.quiz-table-row:nth-child(even) {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+}
+.quiz-table-row:nth-child(odd) {
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.quiz-questions-table .quiz-table-row:hover,
+.quiz-answers-table .quiz-table-row:hover {
+    background-color: #cce4ff !important;
+    transition: background 0.2s;
+}
+
+.quiz-answers-table {
+    margin-top: 16px;
+    min-width: 500px;
+    border-collapse: collapse;
+    border-top: 1px solid #e0e0e0;
+}
+.quiz-answers-table .quiz-table-row {
+    border-bottom: 1px solid #e0e0e0;
+}

@@ -1,0 +1,41 @@
+.form .number-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 0.0625rem solid #ccc;
+  border-radius: 0.3125rem;
+}
+
+.error {
+  border-color: red;
+}
+
+.button-container1 {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.625rem 0;
+}
+
+.button-container2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.button-container2 .form-button {
+  width: 100%;
+}
+
+@media (min-width: 401px) {
+  .button-container2 .form-button {
+    width: 12.5rem;
+  }
+}
+
+@media (min-width: 601px) {
+  .button-container2 {
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 1.25rem;
+  }
+}

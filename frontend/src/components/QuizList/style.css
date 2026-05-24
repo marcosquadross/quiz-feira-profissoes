@@ -1,0 +1,13 @@
+.quiz-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 3.125rem;
+    padding: 0.625rem;
+}
+
+@media (min-width: 30rem) {
+    .quizzes-list .quiz-list__container {
+        padding: 1.25rem;
+    }
+}

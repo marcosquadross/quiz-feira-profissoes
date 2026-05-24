@@ -1,0 +1,127 @@
+.question-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-width: 100vw;
+	height: 100vh;
+	gap: 1.25rem;
+	box-sizing: border-box;
+	overflow-y: hidden;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+
+/* .question-container .question-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  width: 100%;
+  box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+} */
+
+.flex-question-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+	width: 100%;
+	padding: 0 1.25rem;
+	gap: 1.25rem;
+	box-sizing: border-box;
+
+}
+
+/* Se tiver apenas um filho */
+.flex-question-container> :only-child {
+	margin: 0 auto;
+	/* centraliza horizontalmente */
+}
+
+.question-container .question-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 0.5rem;
+	box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+}
+
+@media (min-width: 768px) {
+	.question-container {
+		/* padding: 1rem; */
+		gap: 1.25rem;
+	}
+
+	.question-container .flex-question-container {
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		position: relative;
+		gap: 1.5rem;
+	}
+
+	.question-container .question-header {
+		align-items: center;
+		min-height: 5rem;
+		/* border-radius: 0.5rem; */
+	}
+}
+
+/* No seu arquivo style.css */
+
+.question-container.is-paused .flex-question-container {
+    filter: blur(8px) grayscale(40%); /* Desfoca o conteúdo da pergunta */
+    pointer-events: none; /* Impede qualquer clique nas respostas */
+    transition: filter 0.4s ease;
+}
+
+.pause-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6); /* Fundo escuro semi-transparente */
+    backdrop-filter: blur(4px); /* Blur no fundo do overlay */
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.pause-icon-animation {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+/* Quando a questão ainda não foi liberada pelo host */
+.question-container.waiting-release .flex-question-container {
+    filter: grayscale(1) opacity(0.5);
+    pointer-events: none; /* Bloqueia cliques no nível do CSS */
+    transition: all 0.6s ease;
+}
+
+/* Overlay de espera para o player */
+.pause-overlay {
+    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 1001;
+    /* ... demais estilos de centralização já existentes */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}

@@ -1,0 +1,20 @@
+.custom-select {
+    width: 100%;
+    max-width: 400px;
+}
+
+.custom-select .MuiOutlinedInput-root {
+    /* Cor da borda padrão */
+    /* border-color: #E0E3E7; */
+    border-color: red;
+}
+
+/* Cor da borda do input quando hover */
+.custom-select .MuiOutlinedInput-root:hover fieldset {
+    border-color: red;
+}
+
+/* Cor da borda do input quando focado */
+.custom-select .MuiOutlinedInput-root.Mui-focused fieldset {
+    border-color: red;
+}

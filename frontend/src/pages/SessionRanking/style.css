@@ -1,0 +1,17 @@
+.ranking-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+
+.ranking-page {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: var(--main-container-padding);
+	gap: var(--main-container-gap);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center top;
+}

@@ -1,0 +1,20 @@
+.custom-input {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.custom-input .MuiOutlinedInput-root:hover fieldset {
+    border-color: #6F7E8C; 
+}
+
+.custom-input .MuiOutlinedInput-root.Mui-focused fieldset {
+    border-color: #6F7E8C;
+}
+
+.custom-input .MuiInputLabel-root {
+    color: black;
+}
+
+.custom-input .MuiInputLabel-root.Mui-focused {
+    color: black;
+}

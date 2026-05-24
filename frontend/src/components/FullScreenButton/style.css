@@ -1,0 +1,18 @@
+.fullscreen-button-container .fullscreen-icon {
+  font-size: var(--button-icon-font-size);
+  color: white;
+  background-color: #0288d1;
+  border: 0.125rem solid #0288d1;
+  border-radius: var(--button-icon-border-radius);
+  box-shadow: var(--button-icon-box-shadow);
+  transition: var(--button-icon-transition);
+}
+
+.fullscreen-button-container:hover .fullscreen-icon {
+  background-color: #0469af;
+  box-shadow: var(--button-icon-bs-hover);
+}
+
+.fullscreen-button-container:active .fullscreen-icon {
+  transform: scale(var(--button-icon-scale));
+}

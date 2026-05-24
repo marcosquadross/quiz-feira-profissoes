@@ -1,0 +1,6 @@
+.login-container {
+    width: 100%;
+    height: 100vh;
+    padding: var(--main-container-padding);
+    gap: var(--main-container-gap);
+}

@@ -1,0 +1,15 @@
+.button-container2 .form-button {
+  width: 100%;
+}
+
+@media (min-width: 401px) {
+  .button-container2 .form-button {
+    width: 9.375rem;
+  }
+}
+
+@media (min-width: 601px) {
+  .button-container2 {
+    align-items: center;
+  }
+}

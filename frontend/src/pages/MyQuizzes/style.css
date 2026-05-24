@@ -1,0 +1,34 @@
+.quiz-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 3.125rem;
+    padding: 0.625rem;
+}
+
+.quiz-list__container {
+    display: flex;
+    flex-direction: column;
+    min-width: 16.875rem;
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.3125rem;
+    gap: 1.875rem;
+    padding: 1rem;
+}
+
+.quiz-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media (min-width: 30rem) {
+    .quiz-actions {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .quiz-list__container {
+        padding: 1.25rem;
+    }
+}

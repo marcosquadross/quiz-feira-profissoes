@@ -1,0 +1,124 @@
+/* ─── Layout estrutural ─── */
+.quiz-home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.quiz-home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;          /* era var(--main-container-padding) — valor concreto e controlado */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+/* ─── Card central ─── */
+.quiz-home .quiz-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.quiz-home .content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 440px;             /* reduzido de 700px: card mais focado */
+  padding: 2rem 1.75rem;        /* padding único e consistente (era duplicado) */
+  gap: 0;                       /* espaçamento controlado por margin em cada filho */
+  border-radius: 1.25rem;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* ─── Cabeçalho do card ─── */
+.quiz-home .card-header {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-home .quiz-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.75rem;
+}
+
+.quiz-home .title {
+  font-size: clamp(1.25rem, 3vw, 1.625rem);  /* era h4 fixo */
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: 0.35rem;
+}
+
+.quiz-home .subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* ─── Divisor ─── */
+.quiz-home .divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Formulário ─── */
+.quiz-home .quiz-input-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0;
+}
+
+.quiz-home .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.quiz-home .form-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* ─── Botão ─── */
+.quiz-home .start-button {
+  width: 100%;
+  margin-top: 0.25rem;         /* respiro mínimo antes do botão */
+}
+
+/* ─── Rodapé do card ─── */
+.quiz-home .card-footer {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+/* ─── Responsivo ─── */
+@media (min-width: 768px) {
+  .quiz-home .content-container {
+    padding: 2.5rem 2.25rem;
+  }
+}

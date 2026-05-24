@@ -1,0 +1,19 @@
+.home-button-container .home-icon {
+  font-size: var(--button-icon-font-size);
+  color: white;
+  background-color: #28a745;
+  border: 0.125rem solid #28a745;
+  border-radius: var(--button-icon-border-radius);
+  box-shadow: var(--button-icon-box-shadow);
+  transition: var(--button-icon-transition);
+  padding: var(--button-icon-padding);
+}
+
+.home-button-container:hover .home-icon {
+  background-color: #218838;
+  box-shadow: var(--button-icon-bs-hover);
+}
+
+.home-button-container:active .home-icon {
+  transform: scale(var(--button-icon-scale));
+}

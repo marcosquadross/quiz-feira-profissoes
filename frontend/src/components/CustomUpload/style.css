@@ -1,0 +1,44 @@
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.file-input {
+    width: 100%;
+}
+
+.file-upload-input {
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.3125rem;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+}
+
+.file-upload-container .file-input-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+@media (min-width: 401px) {
+    .file-upload-container .file-input-button {
+        width: 12.5rem;
+    }
+}
+
+@media (min-width: 601px) {
+    .file-upload-container {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+
+    .file-input {
+        flex: 1;
+        width: auto;
+    }
+}

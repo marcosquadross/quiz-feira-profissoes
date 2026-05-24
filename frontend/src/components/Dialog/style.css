@@ -1,0 +1,15 @@
+.dialog .dialog-title {
+  background-color: #fecb29;
+  color: black;
+  margin-bottom: 0.625rem;
+}
+
+.dialog .dialog-message {
+  color: #000;
+  font-size: 1.125rem;
+}
+
+.dialog .dialog-actions .MuiButton-root {
+  font-weight: bold;
+  color: #000;
+}

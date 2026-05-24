@@ -1,0 +1,19 @@
+.ranking-button-container .ranking-icon {
+  font-size: var(--button-icon-font-size);
+  color: white;
+  background-color: #fecc29;
+  border: 0.125rem solid #fecc29;
+  border-radius: var(--button-icon-border-radius);
+  box-shadow: var(--button-icon-box-shadow);
+  transition: var(--button-icon-transition);
+  padding: var(--button-icon-padding);
+}
+
+.ranking-button-container:hover .ranking-icon {
+  background-color: #f7b500;
+  box-shadow: var(--button-icon-bs-hover);
+}
+
+.ranking-button-container:active .ranking-icon {
+  transform: scale(var(--button-icon-scale));
+}

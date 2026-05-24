@@ -1,0 +1,37 @@
+.options .options-grid {
+  display: flex;
+  justify-content: space-between; 
+  flex-wrap: wrap; 
+}
+
+.options .MuiFormControl-root .MuiFormControlLabel-root {
+  margin-top: 0.625rem;
+  margin-left: 0;
+}
+
+.options .MuiFormControl-root .MuiFormControlLabel-root .MuiButtonBase-root {
+  padding: 0.3125rem;
+}
+
+.custom-radio {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+  border-radius: 50%;
+}
+
+.custom-radio:hover {
+  transform: scale(1.2);
+  border-radius: 50%;
+}
+
+.custom-radio .MuiSvgIcon-root {
+  width: 1.875rem;
+  height: 1.875rem;
+}
+
+@media (min-width: 768px) {
+
+  .options .MuiFormControl-root .MuiFormControlLabel-root {
+    margin-top: 0.3125rem;
+  }
+}

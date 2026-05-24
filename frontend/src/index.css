@@ -1,0 +1,33 @@
+:root {
+    --button-icon-font-size: 2.25rem;
+    --button-icon-padding: 0.2rem;
+    --button-icon-border-radius: 50%;
+    --button-icon-box-shadow: 0.125rem 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
+    --button-icon-bs-hover: 0.25rem 0.25rem 0.625rem rgba(0, 0, 0, 0.3);
+    --button-icon-transition: 0.3s ease;
+    --button-icon-scale: 0.95;
+    --main-container-padding: 0.5rem;
+    --main-container-gap: 0.75rem;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+@media (min-width: 768px) {
+    /* .header {
+        border-radius: 0.5rem;
+    } */
+
+    :root {
+        --main-container-padding: 1rem;
+        --main-container-gap: 1rem;
+    }
+}

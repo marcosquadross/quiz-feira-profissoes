@@ -1,0 +1,44 @@
+.session-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f7fa;
+  padding: 20px;
+}
+
+.session-card {
+  max-width: 600px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 16px;
+  background-color: #fff;
+}
+
+.section-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.url-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.session-link {
+  font-size: 1rem;
+  color: #1976d2;
+  word-break: break-all;
+}
+
+.players-section {
+  margin-bottom: 30px;
+}
+
+.player-item {
+  padding: 4px 0;
+  border-bottom: 1px solid #eee;
+}

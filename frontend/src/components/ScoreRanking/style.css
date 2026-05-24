@@ -1,0 +1,118 @@
+.score-ranking-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.table-container {
+    width: 100%;
+    /* max-width: 640px; */
+}
+
+.table-container .quiz-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #111;
+}
+
+.table-paper {
+    border-radius: 0.75rem !important;
+    overflow: hidden;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.custom-table .table-cell-header {
+    background-color: #111;
+    color: #fff;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 11px 16px;
+    border: none;
+}
+
+.custom-table .MuiTableCell-root {
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.07);
+    padding: 12px 16px;
+}
+
+.custom-table .row-me {
+    background-color: #eff6ff;
+}
+
+.custom-table .row-me td {
+    border-bottom-color: #bfdbfe;
+}
+
+.trophy-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+}
+
+.pos-number {
+    font-size: 0.8125rem !important;
+    font-weight: 500;
+    color: #9ca3af;
+}
+
+.player-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.player-avatar--me {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.player-name {
+    font-size: 0.875rem !important;
+    color: #111;
+}
+
+.player-name--me {
+    font-weight: 600 !important;
+}
+
+.you-badge {
+    font-size: 0.6875rem;
+    padding: 2px 8px;
+    border-radius: 99px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    border: 0.5px solid #93c5fd;
+    white-space: nowrap;
+}
+
+.score-text {
+    font-size: 0.875rem !important;
+    font-weight: 500;
+}
+
+.score-text--me {
+    color: #1d4ed8;
+}
+
+@media (min-width: 768px) {
+    .custom-table .MuiTableCell-root {
+        font-size: 0.9375rem;
+    }
+}

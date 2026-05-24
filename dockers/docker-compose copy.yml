@@ -1,0 +1,28 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+    ports:
+      - "8888:80"
+    depends_on:
+      - backend
+    volumes:
+      - files_uploads:/usr/share/nginx/backend_public:ro
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dockerfile
+    ports:
+      - "3000:3000"
+    env_file: 
+      - ./backend/.env   # agora sim no formato correto
+    volumes:
+      - files_uploads:/app/public
+      - sqlite_data:/app/sqlite  # <-- volume p/ persistir o banco SQLite
+    command: sh -c "npm run migration:run && npm run start:prod"
+
+volumes:
+  files_uploads:
+  sqlite_data:

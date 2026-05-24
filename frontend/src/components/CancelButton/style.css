@@ -1,0 +1,18 @@
+.cancel-button-container .close-icon {
+  font-size: var(--button-icon-font-size); 
+  color: white;
+  background-color: red;
+  border: 0.125rem solid red;
+  border-radius: var(--button-icon-border-radius);
+  box-shadow: var(--button-icon-box-shadow);
+  transition: var(--button-icon-transition);
+}
+
+.cancel-button-container:hover .close-icon {
+  background-color: #b30000;
+  box-shadow: var(--button-icon-bs-hover);
+}
+
+.cancel-button-container:active .close-icon {
+  transform: scale(var(--button-icon-scale));
+}

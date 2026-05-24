@@ -1,0 +1,43 @@
+.players-card {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+	box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 320px; 
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* position: fixed;
+  right: 1.5rem; */
+}
+
+.players-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.players-list {
+  overflow-y: auto;
+  max-height: 240px; 
+  padding-right: 4px;
+}
+
+.players-list::-webkit-scrollbar {
+  width: 6px;
+}
+.players-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.player-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-chip {
+  font-weight: 500;
+}

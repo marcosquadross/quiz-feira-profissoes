@@ -1,0 +1,32 @@
+.custom-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 62.5rem;
+    margin: auto;
+    gap: 0.625rem;
+}
+
+.custom-image-input {
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.3125rem;
+    width: 100%;
+    padding: 0.5rem 0.875rem;
+    font-size: 1rem;
+    display: flex;
+}
+
+.custom-input-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.625rem;
+}
+
+.select-font {
+    display: flex;
+    width: 100%;
+}
+
+.color-input {
+    height: 2.5rem;
+    margin-bottom: 0.625rem;
+}
