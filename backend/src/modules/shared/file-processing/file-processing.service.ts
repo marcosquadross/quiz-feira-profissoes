@@ -35,7 +35,8 @@ export class FileProcessingService {
         throw new Error('O caminho não é um arquivo');
       }
     } catch (err) {
-      throw new Error(`Erro ao acessar o arquivo: ${err.message}`);
+      const message = err instanceof Error ? err.message : String(err);
+      throw new Error(`Erro ao acessar o arquivo: ${message}`);
     }
 
     return fs.createReadStream(filePath);

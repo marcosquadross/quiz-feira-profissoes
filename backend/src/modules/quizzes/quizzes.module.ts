@@ -12,6 +12,7 @@ import { Response, ResponseSchema } from '../response/schemas/response.schema';
 import { FileProcessingModule } from '../shared/file-processing/file-processing.module';
 import { GatewayModule } from '../shared/gateway/gateway.module';
 import { AuthModule } from '../../auth/auth.module';
+import { StorageService } from '../shared/storage/storage.service';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { AuthModule } from '../../auth/auth.module';
     AuthModule,
   ],
   controllers: [QuizzesController],
-  providers: [QuizService, ResponseService],
+  providers: [QuizService, ResponseService, StorageService],
   exports: [QuizService, ResponseService],
 })
 export class QuizzesModule {}

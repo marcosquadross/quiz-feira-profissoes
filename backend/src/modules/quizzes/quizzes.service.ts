@@ -19,6 +19,7 @@ import { UpdateStyleDto } from './dto/update-style.dto';
 import { CreateQuestionDto } from './dto/create-question.dto';
 
 import { FileProcessingService } from '../shared/file-processing/file-processing.service';
+import { StorageService } from '../shared/storage/storage.service'; // ← NOVO
 
 @Injectable()
 export class QuizService {
@@ -26,7 +27,8 @@ export class QuizService {
     @InjectModel(Quiz.name) private readonly quizModel: Model<QuizDocument>,
     @InjectModel(Response.name) private readonly responseModel: Model<ResponseDocument>,
     private readonly fileProcessingService: FileProcessingService,
-  ) {}
+    private readonly storageService: StorageService, // ← NOVO
+  ) { }
 
   // ─── Helpers internos ────────────────────────────────────────────────────────
 
@@ -34,6 +36,7 @@ export class QuizService {
     zip: AdmZip,
     xlsxFileEntry: AdmZip.IZipEntry,
   ): Promise<CreateQuestionDto[]> {
+    // Mantido com fs — arquivo temporário que não precisa persistir
     const tempPath = path.join(process.env.UPLOADS_DIR, '_temp.xlsx');
     fs.writeFileSync(tempPath, xlsxFileEntry.getData());
 
@@ -94,43 +97,60 @@ export class QuizService {
     if (styleData) quiz.style = { ...quiz.style, ...styleData };
 
     if (backgroundImageFile) {
-      const filePath = path.join(
-        process.env.UPLOADS_DIR,
-        'backgrounds',
-        quiz.accessIdentifier,
-      );
-      fs.mkdirSync(filePath, { recursive: true });
-      fs.writeFileSync(
-        path.join(filePath, backgroundImageFile.originalname),
-        backgroundImageFile.buffer,
-      );
-      quiz.style.backgroundImage = path.join(filePath, backgroundImageFile.originalname);
+      // ── ANTES (fs local) ──────────────────────────────────────────────────────
+      // const filePath = path.join(
+      //   process.env.UPLOADS_DIR,
+      //   'backgrounds',
+      //   quiz.accessIdentifier,
+      // );
+      // fs.mkdirSync(filePath, { recursive: true });
+      // fs.writeFileSync(
+      //   path.join(filePath, backgroundImageFile.originalname),
+      //   backgroundImageFile.buffer,
+      // );
+      // quiz.style.backgroundImage = path.join(filePath, backgroundImageFile.originalname);
+      // ── DEPOIS (Supabase) ─────────────────────────────────────────────────────
+      const bgPath = `backgrounds/${quiz.accessIdentifier}/${backgroundImageFile.originalname}`;
+      await this.storageService.saveFile(backgroundImageFile.buffer, bgPath);
+      quiz.style.backgroundImage = bgPath;
     }
 
-    const tempImagesPath = path.join(process.env.UPLOADS_DIR, `/images/_quiz/${quiz._id}`);
-    const finalImagesPath = path.join(process.env.UPLOADS_DIR, `/images/${quiz.accessIdentifier}`);
-    if (fs.existsSync(tempImagesPath)) {
-      fs.mkdirSync(finalImagesPath, { recursive: true });
-      fs.readdirSync(tempImagesPath).forEach((file) =>
-        fs.renameSync(path.join(tempImagesPath, file), path.join(finalImagesPath, file)),
-      );
-      fs.rmdirSync(tempImagesPath);
-    }
+    // ── ANTES (fs local) ──────────────────────────────────────────────────────
+    // const tempImagesPath = path.join(process.env.UPLOADS_DIR, `/images/_quiz/${quiz._id}`);
+    // const finalImagesPath = path.join(process.env.UPLOADS_DIR, `/images/${quiz.accessIdentifier}`);
+    // if (fs.existsSync(tempImagesPath)) {
+    //   fs.mkdirSync(finalImagesPath, { recursive: true });
+    //   fs.readdirSync(tempImagesPath).forEach((file) =>
+    //     fs.renameSync(path.join(tempImagesPath, file), path.join(finalImagesPath, file)),
+    //   );
+    //   fs.rmdirSync(tempImagesPath);
+    // }
+    // ── DEPOIS (Supabase) ─────────────────────────────────────────────────────
+    await this.storageService.moveFolder(
+      `images/_quiz/${quiz._id}`,
+      `images/${quiz.accessIdentifier}`,
+    );
 
     quiz.questions.forEach((question) => {
-      if (question.image) question.image = `/images/${quiz.accessIdentifier}/${question.image}`;
-      if (question.audio) question.audio = `/audios/${quiz.accessIdentifier}/${question.audio}`;
+      if (question.image) question.image = `images/${quiz.accessIdentifier}/${question.image}`;
+      if (question.audio) question.audio = `audios/${quiz.accessIdentifier}/${question.audio}`;
     });
 
-    const tempAudiosPath = path.join(process.env.UPLOADS_DIR, `/audios/_quiz/${quiz._id}`);
-    const finalAudiosPath = path.join(process.env.UPLOADS_DIR, `/audios/${quiz.accessIdentifier}`);
-    if (fs.existsSync(tempAudiosPath)) {
-      fs.mkdirSync(finalAudiosPath, { recursive: true });
-      fs.readdirSync(tempAudiosPath).forEach((file) =>
-        fs.renameSync(path.join(tempAudiosPath, file), path.join(finalAudiosPath, file)),
-      );
-      fs.rmdirSync(tempAudiosPath);
-    }
+    // ── ANTES (fs local) ──────────────────────────────────────────────────────
+    // const tempAudiosPath = path.join(process.env.UPLOADS_DIR, `/audios/_quiz/${quiz._id}`);
+    // const finalAudiosPath = path.join(process.env.UPLOADS_DIR, `/audios/${quiz.accessIdentifier}`);
+    // if (fs.existsSync(tempAudiosPath)) {
+    //   fs.mkdirSync(finalAudiosPath, { recursive: true });
+    //   fs.readdirSync(tempAudiosPath).forEach((file) =>
+    //     fs.renameSync(path.join(tempAudiosPath, file), path.join(finalAudiosPath, file)),
+    //   );
+    //   fs.rmdirSync(tempAudiosPath);
+    // }
+    // ── DEPOIS (Supabase) ─────────────────────────────────────────────────────
+    await this.storageService.moveFolder(
+      `audios/_quiz/${quiz._id}`,
+      `audios/${quiz.accessIdentifier}`,
+    );
 
     return quiz.save();
   }
@@ -256,22 +276,33 @@ export class QuizService {
       updateQuizDto.accessIdentifier &&
       updateQuizDto.accessIdentifier !== quiz.accessIdentifier
     ) {
-      const oldPath = path.join(process.env.UPLOADS_DIR, 'backgrounds', quiz.accessIdentifier);
-      const newPath = path.join(process.env.UPLOADS_DIR, 'backgrounds', updateQuizDto.accessIdentifier);
-      if (fs.existsSync(oldPath)) fs.renameSync(oldPath, newPath);
+      // ── ANTES (fs local) ────────────────────────────────────────────────────
+      // const oldPath = path.join(process.env.UPLOADS_DIR, 'backgrounds', quiz.accessIdentifier);
+      // const newPath = path.join(process.env.UPLOADS_DIR, 'backgrounds', updateQuizDto.accessIdentifier);
+      // if (fs.existsSync(oldPath)) fs.renameSync(oldPath, newPath);
+      // ── DEPOIS (Supabase) ───────────────────────────────────────────────────
+      await this.storageService.moveFolder(
+        `backgrounds/${quiz.accessIdentifier}`,
+        `backgrounds/${updateQuizDto.accessIdentifier}`,
+      );
       quiz.accessIdentifier = updateQuizDto.accessIdentifier;
     }
 
     if (newStyle) Object.assign(quiz.style, newStyle);
 
     if (backgroundImageFile) {
-      const filePath = path.join(process.env.UPLOADS_DIR, 'backgrounds', quiz.accessIdentifier);
-      fs.mkdirSync(filePath, { recursive: true });
-      fs.writeFileSync(
-        path.join(filePath, backgroundImageFile.originalname),
-        backgroundImageFile.buffer,
-      );
-      quiz.style.backgroundImage = path.join(filePath, backgroundImageFile.originalname);
+      // ── ANTES (fs local) ────────────────────────────────────────────────────
+      // const filePath = path.join(process.env.UPLOADS_DIR, 'backgrounds', quiz.accessIdentifier);
+      // fs.mkdirSync(filePath, { recursive: true });
+      // fs.writeFileSync(
+      //   path.join(filePath, backgroundImageFile.originalname),
+      //   backgroundImageFile.buffer,
+      // );
+      // quiz.style.backgroundImage = path.join(filePath, backgroundImageFile.originalname);
+      // ── DEPOIS (Supabase) ───────────────────────────────────────────────────
+      const bgPath = `backgrounds/${quiz.accessIdentifier}/${backgroundImageFile.originalname}`;
+      await this.storageService.saveFile(backgroundImageFile.buffer, bgPath);
+      quiz.style.backgroundImage = bgPath;
     }
 
     return quiz.save();
@@ -281,17 +312,20 @@ export class QuizService {
     const quiz = await this.quizModel.findById(quizId);
     if (!quiz) return null;
 
-    const backgroundImagePath = path.join(process.env.UPLOADS_DIR, 'backgrounds', quiz.accessIdentifier);
-    if (fs.existsSync(backgroundImagePath))
-      await fs.promises.rm(backgroundImagePath, { recursive: true });
-
-    const imagesPath = path.join(process.env.UPLOADS_DIR, 'images', quiz.accessIdentifier);
-    if (fs.existsSync(imagesPath))
-      await fs.promises.rm(imagesPath, { recursive: true });
-
-    const audiosPath = path.join(process.env.UPLOADS_DIR, 'audios', quiz.accessIdentifier);
-    if (fs.existsSync(audiosPath))
-      await fs.promises.rm(audiosPath, { recursive: true });
+    // ── ANTES (fs local) ──────────────────────────────────────────────────────
+    // const backgroundImagePath = path.join(process.env.UPLOADS_DIR, 'backgrounds', quiz.accessIdentifier);
+    // if (fs.existsSync(backgroundImagePath))
+    //   await fs.promises.rm(backgroundImagePath, { recursive: true });
+    // const imagesPath = path.join(process.env.UPLOADS_DIR, 'images', quiz.accessIdentifier);
+    // if (fs.existsSync(imagesPath))
+    //   await fs.promises.rm(imagesPath, { recursive: true });
+    // const audiosPath = path.join(process.env.UPLOADS_DIR, 'audios', quiz.accessIdentifier);
+    // if (fs.existsSync(audiosPath))
+    //   await fs.promises.rm(audiosPath, { recursive: true });
+    // ── DEPOIS (Supabase) ─────────────────────────────────────────────────────
+    await this.storageService.deleteFolder(`backgrounds/${quiz.accessIdentifier}`);
+    await this.storageService.deleteFolder(`images/${quiz.accessIdentifier}`);
+    await this.storageService.deleteFolder(`audios/${quiz.accessIdentifier}`);
 
     return quiz.deleteOne();
   }
@@ -306,16 +340,21 @@ export class QuizService {
     });
 
     if (existingQuiz) {
-      for (const question of existingQuiz.questions) {
-        if (question.image) {
-          const imgPath = path.join(process.env.UPLOADS_DIR, question.image);
-          if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
-        }
-        if (question.audio) {
-          const audioPath = path.join(process.env.UPLOADS_DIR, question.audio);
-          if (fs.existsSync(audioPath)) fs.unlinkSync(audioPath);
-        }
-      }
+      // ── ANTES (fs local) ──────────────────────────────────────────────────
+      // for (const question of existingQuiz.questions) {
+      //   if (question.image) {
+      //     const imgPath = path.join(process.env.UPLOADS_DIR, question.image);
+      //     if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath);
+      //   }
+      //   if (question.audio) {
+      //     const audioPath = path.join(process.env.UPLOADS_DIR, question.audio);
+      //     if (fs.existsSync(audioPath)) fs.unlinkSync(audioPath);
+      //   }
+      // }
+      // ── DEPOIS (Supabase) ─────────────────────────────────────────────────
+      await this.storageService.deleteFolder(`images/_quiz/${existingQuiz._id}`);
+      await this.storageService.deleteFolder(`audios/_quiz/${existingQuiz._id}`);
+
       await this.quizModel.deleteOne({ _id: existingQuiz._id });
     }
   }
@@ -332,6 +371,7 @@ export class QuizService {
   }> {
     await this.removeExistingPlaceholderQuiz(userId);
 
+    // Arquivo zip temporário — mantido com fs pois não precisa persistir
     const zipFilePath = `../${file.originalname}`;
     fs.writeFileSync(zipFilePath, file.buffer);
 
@@ -376,11 +416,14 @@ export class QuizService {
 
       const savedQuiz = await quiz.save();
 
-      const imagesPath = path.join(process.env.UPLOADS_DIR, `/images/_quiz/${savedQuiz._id}`);
-      const audiosPath = path.join(process.env.UPLOADS_DIR, `/audios/_quiz/${savedQuiz._id}`);
-
-      imagesCount = await this.fileProcessingService.extractAndSaveFiles(zip, 'imagens/', imagesPath);
-      audiosCount = await this.fileProcessingService.extractAndSaveFiles(zip, 'audios/', audiosPath);
+      // ── ANTES (fs local) ────────────────────────────────────────────────────
+      // const imagesPath = path.join(process.env.UPLOADS_DIR, `/images/_quiz/${savedQuiz._id}`);
+      // const audiosPath = path.join(process.env.UPLOADS_DIR, `/audios/_quiz/${savedQuiz._id}`);
+      // imagesCount = await this.fileProcessingService.extractAndSaveFiles(zip, 'imagens/', imagesPath);
+      // audiosCount = await this.fileProcessingService.extractAndSaveFiles(zip, 'audios/', audiosPath);
+      // ── DEPOIS (Supabase) ───────────────────────────────────────────────────
+      imagesCount = await this.storageService.extractAndSaveFiles(zip, 'imagens/', `images/_quiz/${savedQuiz._id}`);
+      audiosCount = await this.storageService.extractAndSaveFiles(zip, 'audios/', `audios/_quiz/${savedQuiz._id}`);
 
       return {
         message: 'Upload bem-sucedido',
