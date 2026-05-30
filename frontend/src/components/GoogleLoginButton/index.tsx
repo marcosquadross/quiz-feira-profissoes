@@ -28,7 +28,7 @@ export function GoogleButton() {
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
     const handleLogin = () => {
-        window.location.href = "http://localhost:3000/auth/google/login";
+        window.location.href = `${import.meta.env.VITE_API_URL}/auth/google/login`;
     };
 
     const handleLogout = () => {
