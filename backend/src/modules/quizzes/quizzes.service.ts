@@ -37,7 +37,7 @@ export class QuizService {
     xlsxFileEntry: AdmZip.IZipEntry,
   ): Promise<CreateQuestionDto[]> {
     // Mantido com fs — arquivo temporário que não precisa persistir
-    const tempPath = path.join(process.env.UPLOADS_DIR, '_temp.xlsx');
+    const tempPath = path.join('/tmp', '_temp.xlsx');
     fs.writeFileSync(tempPath, xlsxFileEntry.getData());
 
     const workbook = new Excel.Workbook();
@@ -371,8 +371,7 @@ export class QuizService {
   }> {
     await this.removeExistingPlaceholderQuiz(userId);
 
-    // Arquivo zip temporário — mantido com fs pois não precisa persistir
-    const zipFilePath = `../${file.originalname}`;
+    const zipFilePath = path.join('/tmp', file.originalname);
     fs.writeFileSync(zipFilePath, file.buffer);
 
     let imagesCount = 0;
