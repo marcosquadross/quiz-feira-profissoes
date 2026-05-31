@@ -26,7 +26,7 @@ export class ResponseService {
     @InjectModel(Response.name) private readonly responseModel: Model<ResponseDocument>,
     @InjectModel(Quiz.name) private readonly quizModel: Model<QuizDocument>,
     private readonly eventsGateway: EventsGateway,
-  ) {}
+  ) { }
 
   async addResponse(createResponseDto: CreateResponseDto): Promise<Response> {
     const quiz = await this.quizModel.findById(createResponseDto.quiz._id);
@@ -116,43 +116,45 @@ export class ResponseService {
       .lean()
       .exec();
 
-    return responses.map((resp): ResponseWithQuiz => {
-      const quiz = resp.quiz as any;
+    return responses
+      .filter((resp) => resp.quiz != null)
+      .map((resp): ResponseWithQuiz => {
+        const quiz = resp.quiz as any;
 
-      return {
-        quiz: {
-          _id: quiz._id.toString(),
-          title: quiz.title as string,
-          accessIdentifier: quiz.accessIdentifier as string,
-        },
-        response: {
-          _id: resp._id as Types.ObjectId,
-          nickname: resp.nickname,
-          finalScore: resp.finalScore,
-          finalTime: resp.finalTime,
-          createdAt: resp.createdAt,
-          answers: resp.answers.map((a): AnswerWithQuestion => {
-            const questionDoc = (quiz.questions as any[])?.find(
-              (q) => q._id.toString() === a.question.toString(),
-            );
-            return {
-              _id: a._id,
-              selectedOption: a.selectedOption,
-              isCorrect: a.isCorrect,
-              timeSpent: a.timeSpent,
-              score: a.score,
-              question: questionDoc
-                ? {
+        return {
+          quiz: {
+            _id: quiz._id.toString(),
+            title: quiz.title as string,
+            accessIdentifier: quiz.accessIdentifier as string,
+          },
+          response: {
+            _id: resp._id as Types.ObjectId,
+            nickname: resp.nickname,
+            finalScore: resp.finalScore,
+            finalTime: resp.finalTime,
+            createdAt: resp.createdAt,
+            answers: resp.answers.map((a): AnswerWithQuestion => {
+              const questionDoc = (quiz.questions as any[])?.find(
+                (q) => q._id.toString() === a.question.toString(),
+              );
+              return {
+                _id: a._id,
+                selectedOption: a.selectedOption,
+                isCorrect: a.isCorrect,
+                timeSpent: a.timeSpent,
+                score: a.score,
+                question: questionDoc
+                  ? {
                     _id: questionDoc._id,
                     text: questionDoc.text,
                     correctAnswer: questionDoc.correctAnswer,
                   }
-                : null,
-            };
-          }),
-        },
-      };
-    });
+                  : null,
+              };
+            }),
+          },
+        };
+      });
   }
 
   async findAllResponses(): Promise<Record<string, any>[][]> {
