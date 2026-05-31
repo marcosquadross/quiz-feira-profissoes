@@ -19,18 +19,25 @@ export class StorageService {
     const folder = zip.getEntries().find(
       (e) => e.entryName.endsWith(folderName) && e.isDirectory,
     );
-    if (!folder) return 0;
+    if (!folder) {
+      console.log(`[Storage] Pasta "${folderName}" não encontrada no zip`);
+      return 0;
+    }
 
     const entries = zip.getEntries().filter(
       (e) => e.entryName.startsWith(folder.entryName) && !e.isDirectory,
     );
 
+    console.log(`[Storage] Enviando ${entries.length} arquivos para ${destPath}`);
+
     for (const entry of entries) {
       const filename = path.basename(entry.entryName);
       const filePath = `${destPath}/${filename}`;
-      await this.supabase.storage
+      const { error } = await this.supabase.storage
         .from(this.bucket)
         .upload(filePath, entry.getData(), { upsert: true });
+      if (error) console.error(`[Storage] Erro ao enviar ${filePath}:`, error);
+      else console.log(`[Storage] Enviado: ${filePath}`);
     }
 
     return entries.length;
